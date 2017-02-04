@@ -4,6 +4,7 @@ var cookieParser  = require('cookie-parser');
 var count = require('./routes/count');
 var login = require('./routes/login');
 var bodyParser = require('body-parser');
+var FileStore = require('session-file-store')(session);
 
 var app = express();
 app.use(cookieParser());
@@ -14,7 +15,8 @@ app.use(bodyParser.json())
 app.use(session({
   secret: 'dwqe123e11231312312@#',
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: true,
+  store: new FileStore() 
 }));
 
 app.get('/count', count.count);

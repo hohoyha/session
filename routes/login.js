@@ -28,13 +28,17 @@ module.exports.loginprocess = function(req, res){
 
    if(username === user.username && pwd === user.password){
       req.session.displayname = user.displayname;
-   }
 
-   res.redirect('/welcome'); 
+      req.session.save(function(err) {
+          console.log(user.displayname);
+          console.log(req.session.displayname);
+          res.redirect('/welcome'); 
+      });
+   }
 }
 
-
 module.exports.welcome = function(req, res){
+     console.log(req.session.displayname);
     if(req.session.displayname)
     {
        res.send(`
@@ -50,6 +54,8 @@ module.exports.welcome = function(req, res){
 }
 
 module.exports.logout = function(req, res){
-   delete req.session.displayname;
-   res.redirect('/welcome');
+    delete req.session.displayname;
+    req.session.save(function(err) {
+        res.redirect('/welcome');
+    });  
 }
